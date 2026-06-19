@@ -1,0 +1,61 @@
+@model KTGIUAKY.Models.Dish_BCS240047
+
+@{
+    ViewData["Title"] = "Thêm món ăn";
+}
+
+<h1>Thêm món ăn mới</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DishCategoryId" class="form-label"></label>
+                <select asp-for="DishCategoryId" class="form-select" asp-items="ViewBag.Categories">
+                    <option value="">-- Chọn loại món ăn --</option>
+                </select>
+                <span asp-validation-for="DishCategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control" type="number" step="1000" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PreparationTime" class="form-label"></label>
+                <input asp-for="PreparationTime" class="form-control" type="number" />
+                <span asp-validation-for="PreparationTime" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input asp-for="IsAvailable" class="form-check-input" />
+                <label asp-for="IsAvailable" class="form-check-label"></label>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Thêm mới" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

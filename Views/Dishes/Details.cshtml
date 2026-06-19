@@ -1,0 +1,117 @@
+@model KTGIUAKY.Models.Dish_BCS240047
+
+@{
+    ViewData["Title"] = "Chi tiết món ăn";
+}
+
+<h1>Chi tiết món ăn</h1>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div>
+    <h4>@Model.Name</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Tên món ăn</dt>
+        <dd class="col-sm-9">@Model.Name</dd>
+
+        <dt class="col-sm-3">Loại món ăn</dt>
+        <dd class="col-sm-9">@Model.DishCategory?.Name</dd>
+
+        <dt class="col-sm-3">Giá</dt>
+        <dd class="col-sm-9">@Model.Price.ToString("#,##0") đ</dd>
+
+        <dt class="col-sm-3">Thời gian chế biến</dt>
+        <dd class="col-sm-9">@Model.PreparationTime phút</dd>
+
+        <dt class="col-sm-3">Phân loại</dt>
+        <dd class="col-sm-9">
+            @if (Model.PreparationTime <= 15)
+            {
+                <span class="badge bg-success">Nhanh</span>
+            }
+            else
+            {
+                <span class="badge bg-warning text-dark">Thông thường</span>
+            }
+        </dd>
+
+        <dt class="col-sm-3">Trạng thái</dt>
+        <dd class="col-sm-9">
+            @if (Model.IsAvailable)
+            {
+                <span class="badge bg-success">Đang bán</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Ngừng bán</span>
+            }
+        </dd>
+
+        <dt class="col-sm-3">Mô tả</dt>
+        <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Description) ? "Không có mô tả" : Model.Description)</dd>
+    </dl>
+</div>
+
+<h4>Hình ảnh</h4>
+@if (Model.DishImages != null && Model.DishImages.Any())
+{
+    <div class="row mb-3">
+        @foreach (var img in Model.DishImages)
+        {
+            <div class="col-md-3 mb-2">
+                <div class="card">
+                    <img src="@img.ImageUrl" class="card-img-top" alt="Ảnh món ăn" style="height: 150px; object-fit: cover;" onerror="this.parentElement.innerHTML='<div class=\'card-body text-center p-2\'><span class=\'text-muted\'>Ảnh lỗi</span></div>'" />
+                    <div class="card-body text-center p-2">
+                        @if (img.IsThumbnail)
+                        {
+                            <span class="badge bg-primary mb-1">Ảnh đại diện</span>
+                        }
+                        else
+                        {
+                            <form asp-controller="DishImages" asp-action="SetThumbnail" asp-route-id="@img.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-outline-primary mb-1">Đặt làm ảnh đại diện</button>
+                            </form>
+                        }
+                        <form asp-controller="DishImages" asp-action="Delete" asp-route-id="@img.Id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Xóa ảnh này?')">Xóa</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="text-muted">Món ăn chưa có ảnh.</p>
+}
+
+<h5 class="mt-3">Thêm ảnh mới</h5>
+<form asp-controller="DishImages" asp-action="Create" method="post" class="row g-2 align-items-end">
+    <div class="col-md-6">
+        <input name="ImageUrl" class="form-control" placeholder="Nhập URL ảnh" required />
+    </div>
+    <div class="col-md-2">
+        <div class="form-check">
+            <input name="IsThumbnail" class="form-check-input" type="checkbox" value="true" id="newIsThumbnail" />
+            <label class="form-check-label" for="newIsThumbnail">Ảnh đại diện</label>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <input name="DishId" type="hidden" value="@Model.Id" />
+        <button type="submit" class="btn btn-primary">Thêm ảnh</button>
+    </div>
+</form>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Sửa</a>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+</div>

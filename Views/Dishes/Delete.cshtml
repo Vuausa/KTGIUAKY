@@ -1,0 +1,44 @@
+@model KTGIUAKY.Models.Dish_BCS240047
+
+@{
+    ViewData["Title"] = "Xóa món ăn";
+}
+
+<h1>Xóa món ăn</h1>
+
+<h3>Bạn có chắc chắn muốn xóa món ăn này?</h3>
+<div>
+    <h4>@Model.Name</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Tên món ăn</dt>
+        <dd class="col-sm-9">@Model.Name</dd>
+
+        <dt class="col-sm-3">Loại món ăn</dt>
+        <dd class="col-sm-9">@Model.DishCategory?.Name</dd>
+
+        <dt class="col-sm-3">Giá</dt>
+        <dd class="col-sm-9">@Model.Price.ToString("#,##0") đ</dd>
+
+        <dt class="col-sm-3">Thời gian chế biến</dt>
+        <dd class="col-sm-9">@Model.PreparationTime phút</dd>
+
+        <dt class="col-sm-3">Trạng thái</dt>
+        <dd class="col-sm-9">
+            @if (Model.IsAvailable)
+            {
+                <span class="badge bg-success">Đang bán</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Ngừng bán</span>
+            }
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Xóa" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>

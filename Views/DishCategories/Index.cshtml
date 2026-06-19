@@ -1,0 +1,41 @@
+@model IEnumerable<KTGIUAKY.Models.DishCategory_BCS240047>
+
+@{
+    ViewData["Title"] = "Quản lý loại món ăn";
+}
+
+<h1>Quản lý loại món ăn</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Thêm loại món ăn</a>
+    <a asp-controller="Dishes" asp-action="Index" class="btn btn-secondary">Quản lý món ăn</a>
+</p>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Tên loại</th>
+            <th>Mô tả</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@(item.Description ?? "Không có mô tả")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Chi tiết</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

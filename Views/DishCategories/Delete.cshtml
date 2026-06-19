@@ -1,0 +1,39 @@
+@model KTGIUAKY.Models.DishCategory_BCS240047
+
+@{
+    ViewData["Title"] = "Xóa loại món ăn";
+}
+
+<h1>Xóa loại món ăn</h1>
+
+<h3>Bạn có chắc chắn muốn xóa loại món ăn này?</h3>
+<div>
+    <h4>@Model.Name</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Tên loại</dt>
+        <dd class="col-sm-9">@Model.Name</dd>
+
+        <dt class="col-sm-3">Mô tả</dt>
+        <dd class="col-sm-9">@(Model.Description ?? "Không có mô tả")</dd>
+
+        <dt class="col-sm-3">Số món ăn</dt>
+        <dd class="col-sm-9">@Model.Dishes?.Count</dd>
+    </dl>
+
+    @if (Model.Dishes != null && Model.Dishes.Any())
+    {
+        <div class="alert alert-danger">
+            Không thể xóa loại món ăn này vì đang có @Model.Dishes.Count món ăn sử dụng.
+        </div>
+        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+    }
+    else
+    {
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Xóa" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </form>
+    }
+</div>
